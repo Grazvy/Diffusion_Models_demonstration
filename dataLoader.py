@@ -23,7 +23,7 @@ def get_dataset(dataset_name='MNIST'):
     elif dataset_name == "Cifar-100":
         dataset = datasets.CIFAR10(root="data", train=True, download=True, transform=transforms)
     elif dataset_name == "Flowers":
-        dataset = datasets.ImageFolder(root="/kaggle/input/flowers-recognition/flowers", transform=transforms)
+        dataset = datasets.ImageFolder(root="./flowers", transform=transforms)
 
     return dataset
 
