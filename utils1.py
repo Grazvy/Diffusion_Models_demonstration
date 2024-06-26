@@ -6,6 +6,8 @@ from torchvision.utils import make_grid
 from PIL import Image
 from IPython.display import display, HTML
 
+
+
 def to_device(data, device):
     """Move tensor(s) to chosen device"""
     if isinstance(data, (list, tuple)):
