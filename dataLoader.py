@@ -5,16 +5,16 @@ from utils1 import DeviceDataLoader
 
 
 def get_dataset(dataset_name='MNIST'):
-    transforms = TF.Compose(
-        [
-            TF.ToTensor(),
-            TF.Resize((32, 32),
-                      interpolation=TF.InterpolationMode.BICUBIC,
-                      antialias=True),
-            TF.RandomHorizontalFlip(),
-            TF.Lambda(lambda t: (t * 2) - 1)  # Scale between [-1, 1]
-        ]
-    )
+    transform_list = [
+        TF.ToTensor(),
+        TF.Resize((32, 32), interpolation=TF.InterpolationMode.BICUBIC, antialias=True),
+        TF.Lambda(lambda t: (t * 2) - 1)  # Scale between [-1, 1]
+    ]
+
+    if dataset_name != "MNIST":
+        transform_list.insert(2, TF.RandomHorizontalFlip())
+
+    transforms = TF.Compose(transform_list)
 
     if dataset_name.upper() == "MNIST":
         dataset = datasets.MNIST(root="data", train=True, download=True, transform=transforms)
