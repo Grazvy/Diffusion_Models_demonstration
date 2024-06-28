@@ -1,7 +1,7 @@
 import torchvision.transforms as TF
 import torchvision.datasets as datasets
 from torch.utils.data import DataLoader
-from utils import DeviceDataLoader
+from utils1 import DeviceDataLoader
 
 
 def get_dataset(dataset_name='MNIST'):
@@ -18,12 +18,16 @@ def get_dataset(dataset_name='MNIST'):
 
     if dataset_name.upper() == "MNIST":
         dataset = datasets.MNIST(root="data", train=True, download=True, transform=transforms)
+        total_data_size_bytes = len(dataset) * dataset[0][0].numpy().nbytes
+        total_data_size_mb = total_data_size_bytes / (1024 * 1024)
+        print(f"Total available data: {len(dataset)} Images / {total_data_size_mb:.2f} MB ")
+
     elif dataset_name == "Cifar-10":
         dataset = datasets.CIFAR10(root="data", train=True, download=True, transform=transforms)
     elif dataset_name == "Cifar-100":
         dataset = datasets.CIFAR10(root="data", train=True, download=True, transform=transforms)
     elif dataset_name == "Flowers":
-        dataset = datasets.ImageFolder(root="./flowers", transform=transforms)
+        dataset = datasets.ImageFolder(root="./roses_only", transform=transforms)
 
     return dataset
 
