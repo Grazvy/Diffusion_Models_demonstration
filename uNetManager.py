@@ -18,12 +18,12 @@ class UNetManager:
         checkpoint_name (String): name of an existing checkpoint, which you want to apply.
         """
 
-        os.makedirs("inference_results", exist_ok=True)
         os.makedirs("models", exist_ok=True)
 
         config_path = os.path.join("models", model_name, "config")
         self.folder_path = os.path.join("models", model_name)
         self.checkpoints_path = os.path.join("models", model_name, "checkpoints")
+        self.inference_logs_path = os.path.join(self.folder_path, "inference_logs")
         self.checkpoint = None
 
         checkpoint_name = add_tar_suffix(checkpoint_name)
@@ -56,11 +56,12 @@ class UNetManager:
                 raise ValueError("model_config is missing / None for initial creation")
 
             if checkpoint_name is not None:
-                print(f"\033[31mWarning: \033[0mprovided \"checkpoint_name\" is discarded, because we are creating a new"
-                      f" model folder.\nIf you already want a specific name for the checkpoint, use create_checkpoint.")
+                print(
+                    f"\033[31mWarning: \033[0mprovided \"checkpoint_name\" is discarded, because we are creating a new"
+                    f" model folder.\nIf you already want a specific name for the checkpoint, use create_checkpoint.")
 
-            os.makedirs(self.checkpoints_path)
-            os.makedirs(os.path.join(self.folder_path, "inference_logs"))
+            os.makedirs(self.checkpoints_path, exist_ok=True)
+            os.makedirs(self.inference_logs_path, exist_ok=True)
 
             self.model_config = model_config
             write_config(config_path, model_config)
@@ -148,3 +149,9 @@ class UNetManager:
             print("Deletion successful.")
         else:
             print("Cancelled.")
+
+    def get_inference_logs_path(self):
+        log_ids = [int(log.replace("log_", "")) for log in os.listdir(self.inference_logs_path)]
+        last_id = max(log_ids) if 0 < len(log_ids) else 0
+        file_name = f"log_{last_id + 1}"
+        return os.path.join(self.inference_logs_path, file_name)
