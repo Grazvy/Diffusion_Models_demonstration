@@ -34,8 +34,8 @@ class UNetManager:
             self.model_config = read_config(config_path)
 
             if model_config is not None:
-                print(f"\033[31mWarning: \033[0mprovided \"model_config\" not used, because we are loading an already "
-                      f"existing model folder.\n{config_path}.json is used instead.")
+                print(f"\033[31mWarning: \033[0mprovided \"model_config\" ignored, because an already "
+                      f"existing model folder is being loaded.\n{config_path}.json is used instead.")
 
             # get most recent checkpoint
             if checkpoint_name is None:
@@ -57,8 +57,8 @@ class UNetManager:
 
             if checkpoint_name is not None:
                 print(
-                    f"\033[31mWarning: \033[0mprovided \"checkpoint_name\" is discarded, because we are creating a new"
-                    f" model folder.\nIf you already want a specific name for the checkpoint, use create_checkpoint.")
+                    f"\033[31mWarning: \033[0mprovided \"checkpoint_name\" is ignored, because we are creating a new"
+                    f" model folder.\nIf you already want a specific name for a checkpoint, use create_checkpoint.")
 
             os.makedirs(self.checkpoints_path, exist_ok=True)
             os.makedirs(self.inference_logs_path, exist_ok=True)

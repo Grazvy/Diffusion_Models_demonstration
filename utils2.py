@@ -6,6 +6,17 @@ from swissRollLoader import SwissRoll2DLoader
 from utils1 import make_grid
 
 
+def plot_points(all_data, title, width=5, height=5):
+    all_data = np.vstack(all_data)
+    plt.figure(figsize=(width, height))
+    plt.scatter(all_data[:, 0], all_data[:, 1], c=np.arctan2(all_data[:, 1], all_data[:, 0]), cmap='viridis')
+    plt.title(title)
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.grid(True)
+    plt.show()
+
+
 def visualize_data(dataset_name="MNIST", amount=72):
     """trigger download of data if not already happened, then display selected amount"""
     if dataset_name == "SWISS":
@@ -15,15 +26,8 @@ def visualize_data(dataset_name="MNIST", amount=72):
         for x0, _ in loader:
             all_data.append(x0.view(-1, 2).numpy())  # Flatten for plotting
 
-        all_data = np.vstack(all_data)
+        plot_points(all_data, '2D Swiss Roll Data (Normalized to [-1, 1])')
 
-        plt.figure(figsize=(8, 6))
-        plt.scatter(all_data[:, 0], all_data[:, 1], c=np.arctan2(all_data[:, 1], all_data[:, 0]), cmap='viridis')
-        plt.title('2D Swiss Roll Data (Normalized to [-1, 1])')
-        plt.xlabel('X')
-        plt.ylabel('Y')
-        plt.grid(True)
-        plt.show()
     else:
         loader = get_dataloader(dataset_name=dataset_name, batch_size=amount)
 
