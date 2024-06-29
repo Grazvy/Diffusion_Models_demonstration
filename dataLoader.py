@@ -1,6 +1,7 @@
 import torchvision.transforms as TF
 import torchvision.datasets as datasets
 from torch.utils.data import DataLoader
+from swissRollLoader import SwissRoll2DLoader
 from utils1 import DeviceDataLoader
 
 
@@ -27,7 +28,7 @@ def get_dataset(dataset_name='MNIST'):
     elif dataset_name == "Cifar-100":
         dataset = datasets.CIFAR10(root="data", train=True, download=True, transform=transforms)
     elif dataset_name == "Flowers":
-        dataset = datasets.ImageFolder(root="./roses_only", transform=transforms)
+        dataset = datasets.ImageFolder(root="./flowers", transform=transforms)
 
     return dataset
 
@@ -39,14 +40,18 @@ def get_dataloader(dataset_name='MNIST',
                    num_workers=0,
                    device="cpu"
                    ):
-    dataset = get_dataset(dataset_name=dataset_name)
-    dataloader = DataLoader(dataset, batch_size=batch_size,
-                            pin_memory=pin_memory,
-                            num_workers=num_workers,
-                            shuffle=shuffle
-                            )
-    device_dataloader = DeviceDataLoader(dataloader, device)
-    return device_dataloader
+    if dataset_name == "SWISS":
+        # todo make total samples & noise adjustable
+        return SwissRoll2DLoader(200, batch_size, 0.15)
+    else:
+        dataset = get_dataset(dataset_name=dataset_name)
+        dataloader = DataLoader(dataset, batch_size=batch_size,
+                                pin_memory=pin_memory,
+                                num_workers=num_workers,
+                                shuffle=shuffle
+                                )
+        device_dataloader = DeviceDataLoader(dataloader, device)
+        return device_dataloader
 
 
 def inverse_transform(tensors):
