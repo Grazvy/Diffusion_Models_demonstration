@@ -1,9 +1,12 @@
 import torch
+import numpy as np
 from enum import Enum
+import matplotlib.pyplot as plt
 import torchvision.transforms as TF
 from IPython.core.display_functions import display
 from dataLoader import inverse_transform
 from utils1 import make_grid, frames2vid
+from utils2 import plot_points
 from PIL import Image
 
 
@@ -39,8 +42,7 @@ class InferenceLogger:
             self.outs.append(ndarr)
 
         elif self.inference == InferType.POINT:
-            # todo extract 2d point
-            pass
+            self.outs.append(x.view(-1, 2).numpy())
 
     def save_result(self, x):
         if self.inference == InferType.VIDEO:  # Generate and save video of the entire reverse process.
@@ -48,8 +50,7 @@ class InferenceLogger:
             display(Image.fromarray(self.outs[-1][:, :, ::-1]))
 
         elif self.inference == InferType.POINT:
-            # todo write all points into a json file
-            pass
+            plot_points(self.outs, '2D Swiss Roll Data (Normalized to [-1, 1])')
 
         elif self.inference == InferType.IMAGE:  # Display and save the image at the final timestep.
             x = inverse_transform(x).type(torch.uint8)

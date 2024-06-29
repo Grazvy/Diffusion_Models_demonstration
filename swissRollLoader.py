@@ -36,3 +36,6 @@ class SwissRoll2DLoader:
         batch_data = batch_data.view(-1, 1, 1, 2)  # Reshape to [batch_size, 1, 1, 2]
         self.current_index += self.batch_size
         return batch_data, None
+
+    def __len__(self):
+        return (self.n_samples + self.batch_size - 1) // self.batch_size
