@@ -2,7 +2,7 @@ import os
 import torch
 import shutil
 from uNet import UNet
-from fullyConnectedNN import FullyConnectedNeuralNetwork
+from feedforwardNN import FNN
 from utils2 import read_json, write_json, yes_no_prompt, add_tar_suffix
 
 
@@ -17,7 +17,7 @@ class ModelManager:
         model_name (String): this will be used as an ID to load the current state of your model.
         model_config (dict): the specific configurations for your model.
         checkpoint_name (String): name of an existing checkpoint, which you want to apply.
-        type (String): the type of model to be used, current options: "UNET", "FCNN"
+        type (String): the type of model to be used, current options: "UNET", "FNN"
         """
 
         os.makedirs("models", exist_ok=True)
@@ -84,8 +84,8 @@ class ModelManager:
                 time_multiple=self.model_config['TIME_EMB_MULT'],
             )
 
-        elif self.type == "FCNN":
-            model = FullyConnectedNeuralNetwork(input_dim=2)
+        elif self.type == "FNN":
+            model = FNN(input_dim=2)
 
         else:
             raise ValueError(f"Invalid model type provided during initialisation: {self.type}")
@@ -104,7 +104,7 @@ class ModelManager:
 
         if self.checkpoint is None:
             self.checkpoint = "ckpt.tar"
-            print(f"new checkpoint created at: {os.path.join(self.checkpoints_path, self.checkpoint)}")
+            print(f"new checkpoint file created at: {os.path.join(self.checkpoints_path, self.checkpoint)}")
 
         checkpoint_dict = {
             "opt": optimizer.state_dict(),
