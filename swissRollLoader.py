@@ -33,7 +33,7 @@ class SwissRoll2DLoader:
             raise StopIteration
         batch_indices = self.indices[self.current_index:self.current_index + self.batch_size]
         batch_data = self.data[batch_indices]
-        batch_data = batch_data.view(-1, 1, 1, 2)  # Reshape to [batch_size, 1, 1, 2]
+        #batch_data = batch_data.view(-1, 1, 1, 2)  # Reshape to [batch_size, 1, 1, 2]
         self.current_index += self.batch_size
         return batch_data, None
 
