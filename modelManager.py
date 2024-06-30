@@ -3,7 +3,7 @@ import torch
 import shutil
 from uNet import UNet
 from fullyConnectedNN import FullyConnectedNeuralNetwork
-from utils2 import read_config, write_config, yes_no_prompt, add_tar_suffix
+from utils2 import read_json, write_json, yes_no_prompt, add_tar_suffix
 
 
 class ModelManager:
@@ -34,7 +34,7 @@ class ModelManager:
         # if model folder exists
         if os.path.exists(self.folder_path):
             # load configurations from existing model folder
-            self.model_config = read_config(config_path)
+            self.model_config = read_json(config_path)
 
             if model_config is not None:
                 print(f"\033[31mWarning: \033[0mprovided \"model_config\" ignored, because an already "
@@ -67,7 +67,7 @@ class ModelManager:
             os.makedirs(self.inference_logs_path, exist_ok=True)
 
             self.model_config = model_config
-            write_config(config_path, model_config)
+            write_json(config_path, model_config)
 
     def get_model(self):
         """Create a model instance, based on the stored model configurations and load

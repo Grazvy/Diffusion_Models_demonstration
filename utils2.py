@@ -41,14 +41,14 @@ def visualize_data(dataset_name="MNIST", amount=72):
             break
 
 
-def read_config(file_path):
+def read_json(file_path):
     with open(file_path + '.json', 'r') as f:
         return json.load(f)
 
 
-def write_config(file_path, config):
+def write_json(file_path, dct):
     with open(file_path + '.json', 'w') as f:
-        json.dump(config, f, indent=4)
+        json.dump(dct, f, indent=4)
 
 
 def yes_no_prompt(message):
