@@ -25,6 +25,8 @@ class InferType(Enum):
                 return ".png"
             case InferType.POINT:
                 return ".json"
+            case InferType.NONE:
+                return ""
 
 
 class InferenceLogger:

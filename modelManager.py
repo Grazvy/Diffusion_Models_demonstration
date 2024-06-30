@@ -2,13 +2,14 @@ import os
 import torch
 import shutil
 from uNet import UNet
+from fullyConnectedNN import FullyConnectedNeuralNetwork
 from utils2 import read_config, write_config, yes_no_prompt, add_tar_suffix
 
 
-class UNetManager:
+class ModelManager:
     """Helper class to handle the U-Net storage, loading, checkpointing and inference logging"""
 
-    def __init__(self, model_name, model_config=None, checkpoint_name=None):
+    def __init__(self, model_name, model_config=None, checkpoint_name=None, type="UNET"):
         """Load model configurations and apply an existing checkpoint.
         If specified folder does not exist, create folder structure and save given model configurations.
 
@@ -16,6 +17,7 @@ class UNetManager:
         model_name (String): this will be used as an ID to load the current state of your model.
         model_config (dict): the specific configurations for your model.
         checkpoint_name (String): name of an existing checkpoint, which you want to apply.
+        type (String): the type of model to be used, current options: "UNET", "FCNN"
         """
 
         os.makedirs("models", exist_ok=True)
@@ -25,6 +27,7 @@ class UNetManager:
         self.checkpoints_path = os.path.join("models", model_name, "checkpoints")
         self.inference_logs_path = os.path.join(self.folder_path, "inference_logs")
         self.checkpoint = None
+        self.type = type
 
         checkpoint_name = add_tar_suffix(checkpoint_name)
 
@@ -67,25 +70,33 @@ class UNetManager:
             write_config(config_path, model_config)
 
     def get_model(self):
-        """Create a U-Net instance, based on the stored model configurations and load
+        """Create a model instance, based on the stored model configurations and load
         the checkpoint data on it, if any selected"""
 
-        unet = UNet(
-            input_channels=self.model_config['IMG_SHAPE'][0],
-            output_channels=self.model_config['IMG_SHAPE'][0],
-            base_channels=self.model_config['BASE_CH'],
-            base_channels_multiples=self.model_config['BASE_CH_MULT'],
-            apply_attention=self.model_config['APPLY_ATTENTION'],
-            dropout_rate=self.model_config['DROPOUT_RATE'],
-            time_multiple=self.model_config['TIME_EMB_MULT'],
-        )
+        if self.type == "UNET":
+            model = UNet(
+                input_channels=self.model_config['IMG_SHAPE'][0],
+                output_channels=self.model_config['IMG_SHAPE'][0],
+                base_channels=self.model_config['BASE_CH'],
+                base_channels_multiples=self.model_config['BASE_CH_MULT'],
+                apply_attention=self.model_config['APPLY_ATTENTION'],
+                dropout_rate=self.model_config['DROPOUT_RATE'],
+                time_multiple=self.model_config['TIME_EMB_MULT'],
+            )
+
+        elif self.type == "FCNN":
+            model = FullyConnectedNeuralNetwork(input_dim=2)
+
+        else:
+            raise ValueError(f"Invalid model type provided during initialisation: {self.type}")
+
 
         # load an existing checkpoint
         if self.checkpoint is not None:
             checkpoint_path = os.path.join(self.checkpoints_path, self.checkpoint)
-            unet.load_state_dict(torch.load(checkpoint_path, map_location='cpu')['model'])
+            model.load_state_dict(torch.load(checkpoint_path, map_location='cpu')['model'])
 
-        return unet
+        return model
 
     def update_checkpoint(self, optimizer, scaler, model):
         """Save the model state in the current checkpoint file, or a newly created checkpoint file,
@@ -119,7 +130,7 @@ class UNetManager:
         self.update_checkpoint(optimizer, scaler, model)
         print(f"new checkpoint stored at: {checkpoint_path}")
 
-    def load_checkpoint(self, optimizer, scaler, model, checkpoint_name):
+    def load_checkpoint(self, model, checkpoint_name):
         """Load selected checkpoint file into the model and select it as current."""
 
         checkpoint_name = add_tar_suffix(checkpoint_name)
