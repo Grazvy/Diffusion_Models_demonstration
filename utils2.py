@@ -13,14 +13,16 @@ def plot_points(all_data, title, width=5, height=5):
     plt.title(title)
     plt.xlabel('X')
     plt.ylabel('Y')
+    plt.xlim([-1.33, 1.33])
+    plt.ylim([-1.33, 1.33])
     plt.grid(True)
     plt.show()
 
 
-def visualize_data(dataset_name="MNIST", amount=72):
+def visualize_data(dataset_name="MNIST", amount=72, noise=0.15):
     """trigger download of data if not already happened, then display selected amount"""
     if dataset_name == "SWISS":
-        loader = SwissRoll2DLoader(amount, amount, 0.15)
+        loader = SwissRoll2DLoader(amount, amount, noise)
         all_data = []
 
         for x0, _ in loader:

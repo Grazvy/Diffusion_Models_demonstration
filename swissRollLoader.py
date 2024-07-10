@@ -20,7 +20,9 @@ class SwissRoll2DLoader:
             self.data += self.noise * np.random.randn(self.n_samples, 2)
 
         # Normalize the data to be in range [-1, 1]
-        self.data = (self.data - self.data.min(axis=0)) / (self.data.max(axis=0) - self.data.min(axis=0)) * 2 - 1
+        min = np.array([ -10, -11.6])
+        max = np.array([13.2, 14.6])
+        self.data = (self.data - min) / (max - min) * 2 - 1
         self.data = torch.tensor(self.data, dtype=torch.float32)
 
     def __iter__(self):
