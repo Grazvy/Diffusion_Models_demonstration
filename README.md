@@ -33,4 +33,5 @@ You cal also add your own data, with corresponding adjustment on the dataloader.
 
 
 ### CREDITS
-todo...
+This repo initially started with code from https://github.com/spmallick/learnopencv/tree/master/Guide-to-training-DDPMs-from-Scratch.
+
