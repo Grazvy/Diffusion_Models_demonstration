@@ -11,6 +11,6 @@ conda install conda-forge::tqdm
 conda install fastai::opencv-python-headless
 ```
 #todo specify versions
-
+#add credit to base repo 
 download flowers dataset: https://www.kaggle.com/datasets/alxmamaev/flowers-recognition/data
 

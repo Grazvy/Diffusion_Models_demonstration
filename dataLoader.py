@@ -38,12 +38,11 @@ def get_dataloader(dataset_name='MNIST',
                    pin_memory=False,
                    shuffle=True,
                    num_workers=0,
-                   device="cpu"
+                   device="cpu",
+                   generated_amount=100000  # for custom datasets
                    ):
     if dataset_name == "SWISS":
-        # todo make total samples & noise adjustable
-        # 100 samples to challenge model?
-        return SwissRoll2DLoader(600000, batch_size, 0.0)
+        return SwissRoll2DLoader(generated_amount, batch_size, 0.0)
     else:
         dataset = get_dataset(dataset_name=dataset_name)
         dataloader = DataLoader(dataset, batch_size=batch_size,

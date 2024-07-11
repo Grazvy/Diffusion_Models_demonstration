@@ -4,7 +4,8 @@ import torchvision.transforms as TF
 from IPython.core.display_functions import display
 from dataLoader import inverse_transform
 from utils1 import make_grid, frames2vid
-from utils2 import plot_points, write_json
+from utils2 import write_json
+from visualisations import plot_points
 from PIL import Image
 
 

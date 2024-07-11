@@ -43,15 +43,6 @@ def save_images(images, path, **kwargs):
     im.save(path)
 
 
-def get(element: torch.Tensor, t: torch.Tensor):
-    """
-    Get value at index position "t" in "element" and
-        reshape it to have the same dimension as a batch of images.
-    """
-    ele = element.gather(-1, t)
-    return ele.reshape(-1, 1, 1, 1)
-
-
 def setup_log_directory(config):
     '''Log and Model checkpoint directory Setup'''
 
