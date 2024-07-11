@@ -1,46 +1,13 @@
 import json
-import numpy as np
-import matplotlib.pyplot as plt
-from dataLoader import get_dataloader, inverse_transform
-from swissRollLoader import SwissRoll2DLoader
-from utils1 import make_grid
+import torch
 
 
-def plot_points(all_data, title, width=5, height=5):
-    all_data = np.vstack(all_data)
-    plt.figure(figsize=(width, height))
-    plt.scatter(all_data[:, 0], all_data[:, 1], c=np.arctan2(all_data[:, 1], all_data[:, 0]), cmap='viridis')
-    plt.title(title)
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.xlim([-1.33, 1.33])
-    plt.ylim([-1.33, 1.33])
-    plt.grid(True)
-    plt.show()
-
-
-def visualize_data(dataset_name="MNIST", amount=72, noise=0.15):
-    """trigger download of data if not already happened, then display selected amount"""
-    if dataset_name == "SWISS":
-        loader = SwissRoll2DLoader(amount, amount, noise)
-        all_data = []
-
-        for x0, _ in loader:
-            all_data.append(x0.view(-1, 2).numpy())  # Flatten for plotting
-
-        plot_points(all_data, '2D Swiss Roll Data (Normalized to [-1, 1])')
-
-    else:
-        loader = get_dataloader(dataset_name=dataset_name, batch_size=amount)
-
-        plt.figure(figsize=(12, 6), facecolor='white')
-
-        for b_image, _ in loader:
-            b_image = inverse_transform(b_image).cpu()
-            grid_img = make_grid(b_image / 255.0, nrow=12, padding=True, pad_value=1, normalize=True)
-            plt.imshow(grid_img.permute(1, 2, 0))
-            plt.axis("off")
-            break
+def forward_diffusion_copy(constants, x0: torch.Tensor, t: torch.Tensor):
+    """Copy of forward diffusion, since original is displayed in Notebook"""
+    e = torch.randn_like(x0)
+    x_t = (constants.sqrt_alpha_cumulative_at(timesteps=t) * x0 + constants.sqrt_one_minus_alpha_cumulative_at(
+        timesteps=t) * e)
+    return x_t, e
 
 
 def read_json(file_path):
