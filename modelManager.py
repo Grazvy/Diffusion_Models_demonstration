@@ -17,6 +17,7 @@ class ModelManager:
         model_name (String): this will be used as an ID to load the current state of your model.
         model_config (dict): the specific configurations for your model.
         checkpoint_name (String): name of an existing checkpoint, which you want to apply.
+                                  Uses most recent one, if set to None
         type (String): the type of model to be used, current options: "UNET", "FNN"
         """
 
@@ -37,8 +38,8 @@ class ModelManager:
             self.model_config = read_json(config_path)
 
             if model_config is not None:
-                print(f"\033[31mWarning: \033[0mprovided \"model_config\" ignored, because an already "
-                      f"existing model folder is being loaded.\n{config_path}.json is used instead.")
+                # print(f"Loaded stored model configuration \n{config_path}.json")
+                pass
 
             # get most recent checkpoint
             if checkpoint_name is None:
@@ -52,6 +53,9 @@ class ModelManager:
                     raise ValueError(f"provided checkpoint: {checkpoint_name} not found.")
 
                 self.checkpoint = checkpoint_name
+
+            if checkpoint_name is not None:
+                print(f"checkpoint {checkpoint_name} will be applied.")
 
         else:
             # create folder structure
@@ -97,6 +101,9 @@ class ModelManager:
             model.load_state_dict(torch.load(checkpoint_path, map_location='cpu')['model'])
 
         return model
+
+    def get_img_shape(self):
+        return self.model_config['IMG_SHAPE']
 
     def update_checkpoint(self, optimizer, scaler, model):
         """Save the model state in the current checkpoint file, or a newly created checkpoint file,

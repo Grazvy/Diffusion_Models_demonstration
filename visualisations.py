@@ -56,9 +56,9 @@ def visualize_forward(dataset_name="MNIST", timesteps=1000, batch_size=6, unifor
         print(f"\033[31mWarning:\033 Different batch size for image diffusion is not implemented.")
         batch_size = 6
 
+    # create a list of all the specific timesteps to be displayed
     if uniform_steps:
         specific_timesteps = np.linspace(0, timesteps - 1, 12, dtype=int)
-
     else:
         one_third = timesteps // 3
         two_thirds = timesteps - one_third
