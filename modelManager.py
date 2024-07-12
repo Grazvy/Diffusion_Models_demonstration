@@ -9,7 +9,7 @@ from utils2 import read_json, write_json, yes_no_prompt, add_tar_suffix
 class ModelManager:
     """Helper class to handle the U-Net storage, loading, checkpointing and inference logging"""
 
-    def __init__(self, model_name, model_config=None, checkpoint_name=None, type="UNET"):
+    def __init__(self, model_name, model_config=None, checkpoint_name=None):
         """Load model configurations and apply an existing checkpoint.
         If specified folder does not exist, create folder structure and save given model configurations.
 
@@ -18,7 +18,6 @@ class ModelManager:
         model_config (dict): the specific configurations for your model.
         checkpoint_name (String): name of an existing checkpoint, which you want to apply.
                                   Uses most recent one, if set to None
-        type (String): the type of model to be used, current options: "UNET", "FNN"
         """
 
         os.makedirs("models", exist_ok=True)
@@ -28,7 +27,6 @@ class ModelManager:
         self.checkpoints_path = os.path.join("models", model_name, "checkpoints")
         self.inference_logs_path = os.path.join(self.folder_path, "inference_logs")
         self.checkpoint = None
-        self.type = type
 
         checkpoint_name = add_tar_suffix(checkpoint_name)
 
@@ -36,6 +34,7 @@ class ModelManager:
         if os.path.exists(self.folder_path):
             # load configurations from existing model folder
             self.model_config = read_json(config_path)
+            self.type = self.model_config['MODEL_TYPE']
 
             if model_config is not None:
                 # print(f"Loaded stored model configuration \n{config_path}.json")
@@ -71,6 +70,7 @@ class ModelManager:
             os.makedirs(self.inference_logs_path, exist_ok=True)
 
             self.model_config = model_config
+            self.type = self.model_config['MODEL_TYPE']
             write_json(config_path, model_config)
 
     def get_model(self):
@@ -92,7 +92,7 @@ class ModelManager:
             model = FNN(input_dim=2)
 
         else:
-            raise ValueError(f"Invalid model type provided during initialisation: {self.type}")
+            raise ValueError(f"Invalid model type provided during ModelManager-initialisation: {self.type}")
 
 
         # load an existing checkpoint
