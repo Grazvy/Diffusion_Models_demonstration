@@ -1,8 +1,8 @@
 import os
 import torch
 import shutil
-from uNet import UNet
-from feedforwardNN import FNN
+from neural_networks.uNet import UNet
+from neural_networks.feedforwardNN import FNN
 from utils2 import read_json, write_json, yes_no_prompt, add_tar_suffix
 
 
@@ -20,11 +20,11 @@ class ModelManager:
                                   Uses most recent one, if set to None
         """
 
-        os.makedirs("models", exist_ok=True)
+        os.makedirs("../models", exist_ok=True)
 
-        config_path = os.path.join("models", model_name, "config")
-        self.folder_path = os.path.join("models", model_name)
-        self.checkpoints_path = os.path.join("models", model_name, "checkpoints")
+        config_path = os.path.join("../models", model_name, "config")
+        self.folder_path = os.path.join("../models", model_name)
+        self.checkpoints_path = os.path.join("../models", model_name, "checkpoints")
         self.inference_logs_path = os.path.join(self.folder_path, "inference_logs")
         self.checkpoint = None
 

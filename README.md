@@ -2,6 +2,8 @@
 
 introduction...
 
+reference paper and slides
+
 ### first steps
 set up environment using miniconda: <br/>
 (python 3.10)
