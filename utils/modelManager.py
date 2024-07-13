@@ -3,7 +3,7 @@ import torch
 import shutil
 from neural_networks.uNet import UNet
 from neural_networks.feedforwardNN import FNN
-from utils2 import read_json, write_json, yes_no_prompt, add_tar_suffix
+from utils.utils2 import read_json, write_json, yes_no_prompt, add_tar_suffix
 
 
 class ModelManager:
@@ -32,6 +32,8 @@ class ModelManager:
 
         # if model folder exists
         if os.path.exists(self.folder_path):
+            print(f"loading existing folder {model_name}...")
+
             # load configurations from existing model folder
             self.model_config = read_json(config_path)
             self.type = self.model_config['MODEL_TYPE']
@@ -58,6 +60,8 @@ class ModelManager:
 
         else:
             # create folder structure
+            print(f"creating new folder {model_name}...")
+
             if model_config is None:
                 raise ValueError("model_config is missing / None for initial creation")
 

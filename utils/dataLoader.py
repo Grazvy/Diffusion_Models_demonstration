@@ -1,8 +1,8 @@
 import torchvision.transforms as TF
 import torchvision.datasets as datasets
 from torch.utils.data import DataLoader
-from swissRollLoader import SwissRoll2DLoader
-from utils1 import DeviceDataLoader
+from utils.swissRollLoader import SwissRoll2DLoader
+from utils.utils1 import DeviceDataLoader
 
 
 def get_dataset(dataset_name='MNIST'):
