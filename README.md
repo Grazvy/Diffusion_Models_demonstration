@@ -7,9 +7,9 @@ an overview and go down a specific path, until its application. Since this is wh
 about diffusion models, but none of the papers was providing. <br/>
 So this repository is the practical summary of the theory discussed and an opportunity to play around with image 
 synthesis. That's why most of the infrastructure, which is not relevant for diffusion models specifically, was hidden 
-in the utils folder. <br/>
-This was my part of the seminar "Data Mining" at TUM, which I am happy to share now. You can also check out the corresponding [presentation slides](https://docs.google.com/presentation/d/e/2PACX-1vRCoAqSb1gb5Khuh7aI0a_MwUcAwFF5lDqWjUEkTloc8UKY89TXRbYoVdEVcVz5u0XX9msbiLUEGdPM/pub?start=true&loop=false&delayms=3000).
-The review paper explains the context, derives implemented algorithms and also walks you through the Jupyter Notebook, 
+in the "utils" folder. <br/>
+This was my part in the seminar "Data Mining" at TUM, which I am happy to share now. You can also check out the corresponding [presentation slides](https://docs.google.com/presentation/d/e/2PACX-1vRCoAqSb1gb5Khuh7aI0a_MwUcAwFF5lDqWjUEkTloc8UKY89TXRbYoVdEVcVz5u0XX9msbiLUEGdPM/pub?start=true&loop=false&delayms=3000).
+The review paper explains the context, derives implemented algorithms, and also walks you through the Jupyter Notebook, 
 explaining relevant methods.
 
 
