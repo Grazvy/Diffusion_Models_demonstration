@@ -75,7 +75,7 @@ class InferenceLogger:
 
         elif self.inference == InferType.PLOT_PROCESS:
             write_json(self.save_path, self.outs)
-            plot_points_sequence(self.outs, self.plot_size, frames=len(self.outs), delay=0.3)
+            plot_points_sequence(self.outs, self.plot_size, frames=len(self.outs), delay=0.2)
 
         elif self.inference == InferType.IMAGE:  # Display and save the image at the final timestep.
             x = inverse_transform(x).type(torch.uint8)

@@ -22,9 +22,9 @@ class ModelManager:
 
         os.makedirs("../models", exist_ok=True)
 
-        config_path = os.path.join("../models", model_name, "config")
-        self.folder_path = os.path.join("../models", model_name)
-        self.checkpoints_path = os.path.join("../models", model_name, "checkpoints")
+        config_path = os.path.join("..", "models", model_name, "config")
+        self.folder_path = os.path.join("..", "models", model_name)
+        self.checkpoints_path = os.path.join("..", "models", model_name, "checkpoints")
         self.inference_logs_path = os.path.join(self.folder_path, "inference_logs")
         self.checkpoint = None
 
@@ -32,7 +32,7 @@ class ModelManager:
 
         # if model folder exists
         if os.path.exists(self.folder_path):
-            print(f"loading existing folder {model_name}...")
+            print(f"loading existing folder {self.folder_path}...")
 
             # load configurations from existing model folder
             self.model_config = read_json(config_path)
@@ -60,7 +60,7 @@ class ModelManager:
 
         else:
             # create folder structure
-            print(f"creating new folder {model_name}...")
+            print(f"creating new folder {self.folder_path}...")
 
             if model_config is None:
                 raise ValueError("model_config is missing / None for initial creation")
