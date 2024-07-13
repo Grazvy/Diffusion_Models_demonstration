@@ -20,11 +20,11 @@ class ModelManager:
                                   Uses most recent one, if set to None
         """
 
-        os.makedirs("../models", exist_ok=True)
+        os.makedirs(os.path.join(os.getcwd(),"models"), exist_ok=True)
 
-        config_path = os.path.join("..", "models", model_name, "config")
-        self.folder_path = os.path.join("..", "models", model_name)
-        self.checkpoints_path = os.path.join("..", "models", model_name, "checkpoints")
+        config_path = os.path.join(os.getcwd(), "models", model_name, "config")
+        self.folder_path = os.path.join(os.getcwd(), "models", model_name)
+        self.checkpoints_path = os.path.join(os.getcwd(), "models", model_name, "checkpoints")
         self.inference_logs_path = os.path.join(self.folder_path, "inference_logs")
         self.checkpoint = None
 
@@ -173,7 +173,7 @@ class ModelManager:
             print("Cancelled.")
 
     def get_inference_logs_path(self):
-        log_ids = [int(log.replace("log_", "")) for log in os.listdir(self.inference_logs_path)]
+        log_ids = [int(log.replace("log_", "").replace(".json", "")) for log in os.listdir(self.inference_logs_path)]
         last_id = max(log_ids) if 0 < len(log_ids) else 0
         file_name = f"log_{last_id + 1}"
         return os.path.join(self.inference_logs_path, file_name)
