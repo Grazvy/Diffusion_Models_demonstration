@@ -1,17 +1,19 @@
 import torch
-from dataLoader import get_dataloader, inverse_transform
-from swissRollLoader import SwissRoll2DLoader
-from utils1 import make_grid
-from utils2 import forward_diffusion_copy
-from constantsManager import ConstantsManager
+import time
+from utils.dataLoader import get_dataloader, inverse_transform
+from utils.swissRollLoader import SwissRoll2DLoader
+from utils.utils1 import make_grid
+from utils.utils2 import forward_diffusion_copy
+from utils.constantsManager import ConstantsManager
 import numpy as np
+from IPython import display
 import matplotlib.pyplot as plt
 
 
-def plot_points(all_data, title, width=5, height=5):
-    all_data = np.vstack(all_data)
-    plt.figure(figsize=(width, height))
-    plt.scatter(all_data[:, 0], all_data[:, 1], c=np.arctan2(all_data[:, 1], all_data[:, 0]), cmap='viridis')
+def plot_points(data, title, plot_size):
+    data = np.vstack(data)
+    plt.figure(figsize=(plot_size, plot_size))
+    plt.scatter(data[:, 0], data[:, 1], c=np.arctan2(data[:, 1], data[:, 0]), cmap='viridis')
     plt.title(title)
     plt.xlabel('X')
     plt.ylabel('Y')
@@ -19,6 +21,30 @@ def plot_points(all_data, title, width=5, height=5):
     plt.ylim([-1.33, 1.33])
     plt.grid(True)
     plt.show()
+
+
+def plot_points_sequence(data, plot_size, frames=32, delay=0.5):
+    timesteps = np.linspace(0, len(data) - 1, frames, dtype=int)
+
+    fig, ax = plt.subplots(figsize=(plot_size, plot_size))
+    ax.set_xlim(-1.33, 1.33)
+    ax.set_ylim(-1.33, 1.33)
+    ax.grid(True)
+    ax.set_title('Animation of points over time')
+
+    # Create an initial empty scatter plot
+    sc = ax.scatter([], [], cmap='viridis')
+
+    for t in timesteps:
+        points = np.array(data[t])
+        angles = np.arctan2(points[:, 1], points[:, 0])
+        sc.set_offsets(points)
+        sc.set_array(angles)
+        ax.set_title(f'Timestep {t}')
+
+        display.display(plt.gcf())
+        display.clear_output(wait=True)
+        time.sleep(delay)
 
 
 def visualize_data(dataset_name="MNIST", amount=72, noise=0.15):
