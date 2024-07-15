@@ -93,7 +93,7 @@ class ModelManager:
             )
 
         elif self.type == "FNN":
-            model = FNN(input_dim=2)
+            model = FNN(input_dim=self.model_config['IMG_SHAPE'], time_emb_dim=self.model_config['TIME_EMB_DIM'])
 
         else:
             raise ValueError(f"Invalid model type provided during ModelManager-initialisation: {self.type}")
